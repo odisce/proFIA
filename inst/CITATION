@@ -1,0 +1,18 @@
+citHeader("To cite the proFIA package in publications use:")
+
+citEntry(entry="article",  
+   author=c(
+   person("A.", "Delabriere"), person("U.", "Hohenester"), person("B.", "Colsch"),
+   person("C.", "Junot"), person("F.", "Fenaille"), person("E.", "Thevenot")),
+   title="proFIA: A data preprocessing workflow for Flow Injection Analysis coupled to High-Resolution Mass Spectrometry",
+   journal="Bioinformatics",
+   year="2017",
+   volume="",
+   pages="",
+   url="",
+   textVersion = paste("Delabriere, A., Hohenester, U., Colsch, B., Junot, C., Fenaille, F., Thevenot, E.",
+                       "2017.",
+                       "proFIA: A data preprocessing workflow for Flow Injection Analysis coupled to High-Resolution Mass Spectrometry",
+                       "Bioinformatics.",
+                       "",
+                       ""))

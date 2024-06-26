@@ -1,0 +1,29 @@
+CHANGES IN VERSION 0.99.1
+------------------------------
+PACKAGE MODIFICATION
+
+    o Modified some Tests
+    o Visualisation added	
+
+CHANGES IN VERSION 0.98.4
+------------------------------
+PACKAGE MODIFICATION
+
+    o Package compilation OK
+
+CHANGES IN VERSION 0.98.2
+------------------------------
+PACKAGE MODIFICATION
+
+    o New approach approach for peak detection (geometric instead of wavelets)
+    o Better regression for noise estimation
+    o Debuggued pvalues calculation
+    o Some work on grouping but not finished.
+
+CHANGES IN VERSION 0.98.1
+------------------------------
+PACKAGE MODIFICATION
+
+    o New approach for noise estimation
+	
+
