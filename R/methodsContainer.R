@@ -203,7 +203,7 @@ setMethod("injectionPeaks", "proFIAset", function(object) {
 #' Process FIA experiment.
 #'
 #' Processes an experiment ordered as a tree of files, and return a
-#' proFIAset object. TO check the funirshed structure you may use the 
+#' proFIAset object. TO check the funirshed structure you may use the
 #' \code{\link{acquisitionDirectory}} function.
 #' @export
 #'
@@ -229,7 +229,7 @@ setMethod("injectionPeaks", "proFIAset", function(object) {
 #'
 #' plasSet<-proFIAset(pathplas,ppm=ppm,parallel=FALSE)
 #' plasSet
-#' 
+#'
 #' ###An example using parallelism with a snow cluster using BiocParallel package.
 #' \dontrun{plasSet<-proFIAset(pathplas,ppm=ppm,parallel=TRUE,BPPARAM=bpparam("SnowParam"))}
 #' }
@@ -265,7 +265,7 @@ proFIAset <-
             vxraw <- xcmsRaw(x[1])
             c(quantile(vxraw@env$intensity,probs=0.03),max(vxraw@env$intensity))
         })
-        
+
         vmint <- 2*max(tvmint[2,])
         vminint <- mean(tvmint[1,])
 
@@ -309,8 +309,8 @@ proFIAset <-
           nes <- fitModel(nes,absThreshold = NULL)
           # browser()
         }
-        
-        
+
+
         if(graphical){
             plotNoise(nes)
         }
@@ -437,7 +437,7 @@ switchSummaryPeak<-function(x){
 #' Plot a summary of an FIA acquisition. This summary aims to provides an overview of the
 #' FIA acquisition and the processinf of FIA acquisition. It includes the following graphs :
 #' \itemize{
-#'     \item Barplot A barplot giving the number of peak detected in each sample. The number 
+#'     \item Barplot A barplot giving the number of peak detected in each sample. The number
 #'     of shifted peak is indicated, which can indicate wrong FIA-acquisition, as well as the
 #'     number of peak badly with a low correlation with the injection peak, which can indicate
 #'     a strong matrix effect.
@@ -451,33 +451,33 @@ switchSummaryPeak<-function(x){
 #'     \item PCA A PCA plot to obtain a quick diagnostic of the data. The PCA plot is supposed to be different
 #'     before and after imputation.
 #' }
-#' 
+#'
 #' @export
 #' @param x A proFIAset object.
 #' @param type Shall the plotting be done by sample or by class for the barplot ?
 #' @param ... Not used at the moment.
-#' 
+#'
 #' @aliases plot.FIA plot,proFIAset-method plot,proFIAset,ANY,ANY-method
 #' @return Nothing
 #' @examples
 #' if(require("plasFIA")){
 #'    data(plasSet)
-#'    
-#'    
+#'
+#'
 #'    ####Diagnostic plot after imputation
 #'    plot(plasSet)
-#'    
+#'
 #'    ####The same plot by classes.
 #'    plot(plasSet,type="class")
-#'    
+#'
 #'    ####Diagnostic plot before imputation
 #'    plasSet <- makeDataMatrix(plasSet)
 #'	  plot(plasSet)
-#' 
+#'
 #' }
 #' @rdname plot
 setMethod("plot", "proFIAset",function(x, type=c("sample","class"),...){
-	
+
 	vstep <- 0
 	title_pca <- NULL
 	vomar <- par("mar")
@@ -500,7 +500,7 @@ setMethod("plot", "proFIAset",function(x, type=c("sample","class"),...){
 		vstep <- 4
 		title_pca <- "PCA (imputed data set)"
 	}
-	
+
 	### Barplot of the number of peaks found.
 	type <- match.arg(type)
 	###First plotting the number of peak detected by sample.
@@ -548,14 +548,14 @@ setMethod("plot", "proFIAset",function(x, type=c("sample","class"),...){
 	mtext("Significant Matrix Effect",
 		  line = 0.2,
 		  at = par("usr")[1] + 0.7 * diff(par("usr")[1:2]), col = "red", cex = 0.8)
-	
+
 	par(mar=omar)
-	
+
 	###the injection peaks are plotted.
 	plotSamplePeaks(x, diagPlotL = TRUE)
-	
+
 	if(vstep<2) return(invisible(NA))
-	
+
 	omar <- par("mar")
 	par(mar=c(3.1,2.6,2.1,1.1))
 	plot(density(x@group[,"mzMed"],bw=5),col="red",xlab="",
@@ -563,13 +563,13 @@ setMethod("plot", "proFIAset",function(x, type=c("sample","class"),...){
 		 main="Density of m/z features",lwd=2)
 	mtext("m/z", side = 1, line = 2, cex = 0.7)
 	par(mar = omar)
-	
+
 	if(vstep<3) return(invisible(NA))
-	
+
 	tempMatrix <- t(x@dataMatrix)
 	tempMatrix[which(is.na(tempMatrix))] <- 0
-	res_pca <- suppressMessages(opls(tempMatrix,plotL=FALSE,predI=2,log10L=TRUE,crossvalI=min(7,nrow(tempMatrix)-1)))
-	plot(res_pca,type="x-score",parAsColFcVn=x@classes[,2],parTitleL=FALSE,parDevNewL=FALSE)
+	res_pca <- suppressMessages(opls(tempMatrix, predI = 2,log10L = TRUE,crossvalI = min(7,nrow(tempMatrix) - 1), fig.pdfC = "none"))
+	plot(res_pca,type="x-score",parAsColFcVn=x@classes[,2],parTitleL=FALSE)
 	title(title_pca, line = 2.5)
 	par(mar=vomar)
 	return(invisible(NA))
@@ -1018,20 +1018,20 @@ setGeneric("findMzGroup", function(object, ...)
 #' plasSet<- makeDataMatrix(plasSet)
 #'
 #' index <- findMzGroup(plasSet,mass,tol=tolppm)
-#' 
+#'
 #' plasMols[22,]
 #' #We extract the corresponding group.
 #' groupMatrix(plasSet)[index,]
 #' }
 setMethod("findMzGroup", "proFIAset", function(object, mz, tol,dmz = 0.005, closest = TRUE) {
     if(nrow(object@group)==0) stop("group needs to be created before using findMzGroup. See ?group.FIA.")
-	
+
     vecRes <- vector(mode="list",length=length(mz))
-    
+
     vectol <- tol*1e-6*object@group[,"mzMed"]
     vectol <- ifelse(vectol < dmz, dmz, vectol)
     bmin <- object@group[,"mzMed"]-vectol
-    bmax <- object@group[,"mzMed"]+vectol  
+    bmax <- object@group[,"mzMed"]+vectol
     for (i in 1:length(vecRes)) {
         pos <- which(bmin <= mz[i] &
         			 	bmax >= mz[i])
@@ -1042,7 +1042,7 @@ setMethod("findMzGroup", "proFIAset", function(object, mz, tol,dmz = 0.005, clos
         ##Checking if the found group got his med mz close to the peak.
 
         if (length(pos) == 0 | is.null(pos)) pos <- NA
-        	
+
        vecRes[[i]] <- pos
     }
     if(closest) vecRes <- unlist(vecRes)
@@ -1156,9 +1156,9 @@ setMethod("impute.randomForest","proFIAset",function(object,parallel=FALSE,...){
 	}else{
 		parallel <- "variables"
 	}
-	
+
 	dm <- missForest(dm,parallelize=parallel,...)$ximp
-	
+
 	object@dataMatrix <- dm
 	return(object)
 })
@@ -1183,7 +1183,7 @@ setGeneric("impute.FIA", function(object, ...)
 #'     ###Reinitializing the data matrix an using KNN
 #'     plasSet<-makeDataMatrix(plasSet,maxo=FALSE)
 #'     plasSet<-impute.FIA(plasSet,method="KNN_TN",k=2)
-#'     
+#'
 #'     ###Reinitializing the data matrix and using randomForest
 #'     plasSet<-makeDataMatrix(plasSet,maxo=FALSE)
 #'     plasSet<-impute.FIA(plasSet,method="randomForest")
@@ -1491,7 +1491,7 @@ setMethod("plotFlowgrams", "proFIAset", function(object,
     matpres <- matrix(0,
                      nrow = length(index),
                      ncol = nrow(object@classes))
-    
+
     for (i in 1:length(index)) {
         matpres[i, object@peaks[object@groupidx[[index[i]]],,drop=FALSE][, "sample"]] = 1
     }
@@ -1579,7 +1579,7 @@ setMethod("plotFlowgrams", "proFIAset", function(object,
             ylim  =  c(0, maxy)
         )
         for (j in 1:length(pok)) {
-          
+
             lines(vall[[pok[j]]]$scantime, vall[[pok[j]]][[i]][[1]], col = colvec[pok[j]])
         	if(area){
 
@@ -1610,7 +1610,7 @@ setGeneric("plotSamplePeaks", function(object, ...)
 #' Plot the sample peaks determined by regression for each sample.
 #' If you want to check the various regression performed by
 #' \emph{proFIA} in an individual sample we recommend you to use the
-#' \code{\link{getInjectionPeak}}. A sample peak highly different form the 
+#' \code{\link{getInjectionPeak}}. A sample peak highly different form the
 #' other may indicate a problem of the regression process, or an injection issue
 #' in the acquisition.
 #'
@@ -1774,7 +1774,7 @@ setMethod("exportDataMatrix", "proFIAset", function(object, filename = NULL) {
 #' @examples
 #' if(require(plasFIA)){
 #'     path<-system.file(package="plasFIA","mzML")
-#'     
+#'
 #'     #Defining parameters for Orbitrap fusion.
 #'     ppm<-2
 #'     dmz <- 0.0005

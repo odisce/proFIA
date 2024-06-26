@@ -1,9 +1,15 @@
+CHANGES IN VERSION 1.24.0
+------------------------------
+PACKAGE MODIFICATION
+
+    o Update of the plot method (to aggree with the updates of the underlying the 'ropls::plot' method)
+
 CHANGES IN VERSION 0.99.1
 ------------------------------
 PACKAGE MODIFICATION
 
     o Modified some Tests
-    o Visualisation added	
+    o Visualisation added
 
 CHANGES IN VERSION 0.98.4
 ------------------------------
@@ -25,5 +31,5 @@ CHANGES IN VERSION 0.98.1
 PACKAGE MODIFICATION
 
     o New approach for noise estimation
-	
+
 

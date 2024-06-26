@@ -14,7 +14,7 @@ output:
 ---
 
 ```{r global_options, include=FALSE}
-knitr::opts_chunk$set(fig.width=6, fig.height=6, fig.path='figures/')
+knitr::opts_chunk$set(fig.width = 6, fig.height = 6, fig.path = 'figures/')
 ```
 
 # Context
@@ -71,7 +71,7 @@ library(plasFIA)
 ```
 ```{r paths}
 # finding the directory of the raw files
-path <- system.file(package="plasFIA", "mzML")
+path <- system.file(package = "plasFIA", "mzML")
 list.files(path)
 ```
 The first step of the workflow is the **proFIAset** function which takes as
@@ -90,12 +90,12 @@ Note:
 As all files need to be processed 2 times, one for noise estimation and one
 for model estimation, this step is the most time consuming of the workflow.
 
-```{r profiaset,fig.show="hide",message=FALSE}
+```{r profiaset, fig.show="hide", message=FALSE, warning=FALSE}
 # defining the ppm parameter adapted to the Orbitrap Fusion
 ppm <- 2
 
 # performing the first step of the workflow
-plasSet <- proFIAset(path, ppm=ppm, parallel=FALSE)
+plasSet <- proFIAset(path, ppm = ppm, parallel=FALSE)
 ```
 
 The quality of peak detection can be assessed by using the `plotRaw` method to 
@@ -107,8 +107,8 @@ data("plasMols")
 
 # plotting the raw region aroung the Diphenhydramine mass signal
 plasMols[7,]
-mzrange <- c(plasMols[7,"mass_M+H"]-0.1,plasMols[7,"mass_M+H"]+0.1)
-plotRaw(plasSet, type="r", sample=3, ylim=mzrange, size=0.6)
+mzrange <- c(plasMols[7,"mass_M+H"] - 0.1,plasMols[7,"mass_M+H"] + 0.1)
+plotRaw(plasSet, type = "r", sample = 3, ylim = mzrange, size = 0.6)
 ```
 
 In the example above, we see that a signal at 256.195 m/z corresponding to the
@@ -295,10 +295,10 @@ dataMatrix <- peakTable[,1:nrow(phenoClasses(plasSet))]
 ```
 
 ```{r plot_summary_opls, echo=FALSE}
-plasSet.opls <- opls(t(dataMatrix),log10(vconcentration),predI = 1,log10L = TRUE, orthoI = NA, devNewL = FALSE,crossvalI=5)
+plasSet.opls <- opls(t(dataMatrix), log10(vconcentration), predI = 1, log10L = TRUE, orthoI = NA, crossvalI = 5)
 ```
 ```{r plot_summary_opls_h, eval=FALSE}
-plasSet.opls <- opls(t(peakTable),scale(log10(vconcentration)),predI = 1,log10L = TRUE, orthoI = NA)
+plasSet.opls <- opls(t(peakTable),scale(log10(vconcentration)), predI = 1, log10L = TRUE, orthoI = NA)
 ```
 As the variance explained Q2 is superior to 0.9, the fitted model explains the majority of the variance. The score plot and the observation diagnostic show that there as no aberrant deviation between samples. As the compounds are spiked with an increasing concentration of chemicals, this should be visible of the first components. We see that the non suppressed peak contribute the most to the data.
 ```{r matrix_effect_plot}
@@ -311,7 +311,7 @@ vipVn <- getVipVn(plasSet.opls)[nnaVl]
 orthoVipVn <- getVipVn(plasSet.opls, orthoL = TRUE)[nnaVl]
 colVc <- rev(rainbow(sum(nnaVl), end = 4/6))
 plot(vipVn[ordVi], orthoVipVn[ordVi], pch = 16, col = colVc,
-     xlab = "VIP", ylab = "VIP_ortho", main = "VIP_ortho vs VIP.",lwd=3)
+     xlab = "VIP", ylab = "VIP_ortho", main = "VIP_ortho vs VIP.",lwd = 3)
 
 ##Adding the point corresponding to samples.
 points(getVipVn(plasSet.opls)[lMatch],getVipVn(plasSet.opls, orthoL = TRUE)[lMatch], cex=1.2,pch=1,col="black",lwd=2)
